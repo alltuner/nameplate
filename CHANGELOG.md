@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.4](https://github.com/alltuner/nameplate/compare/v0.1.3...v0.1.4) (2026-04-04)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v6 ([#17](https://github.com/alltuner/nameplate/issues/17)) ([f640a78](https://github.com/alltuner/nameplate/commit/f640a78221f1b1ef5ef593886bb31bb65a0db2ab))
+
+
+### CI/CD Changes
+
+* Add Claude Code GitHub Workflow ([#14](https://github.com/alltuner/nameplate/issues/14)) ([0ba5944](https://github.com/alltuner/nameplate/commit/0ba59442450f645d493e758c296493b5c4351e9e))
+
+
+### Build System
+
+* remove gettext dependency and QEMU from CI ([#15](https://github.com/alltuner/nameplate/issues/15)) ([392a02e](https://github.com/alltuner/nameplate/commit/392a02ebe1512e4f6577438d386f56991407f639))
+
 ## [0.1.3](https://github.com/alltuner/nameplate/compare/v0.1.2...v0.1.3) (2026-04-04)
 
 
