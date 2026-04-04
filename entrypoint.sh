@@ -6,6 +6,10 @@ set -e
 
 envsubst < /etc/coredns/Corefile.template > /etc/coredns/Corefile
 
+if [ -n "${UPSTREAM_DNS}" ]; then
+    sed -i '/^}$/i\    forward . '"${UPSTREAM_DNS}" /etc/coredns/Corefile
+fi
+
 echo "Starting CoreDNS with configuration:"
 cat /etc/coredns/Corefile
 echo "---"

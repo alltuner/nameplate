@@ -34,6 +34,11 @@ services:
       HEALTH_PORT: ${HEALTH_PORT:-8080}
       READY_PORT: ${READY_PORT:-8181}
 
+      # Upstream DNS server for forwarding unmatched queries.
+      # Leave empty to disable forwarding (split DNS only).
+      # Example: 1.1.1.1 or 100.100.100.100 for Tailscale MagicDNS.
+      UPSTREAM_DNS: ${UPSTREAM_DNS:-}
+
     restart: unless-stopped
 
     healthcheck:

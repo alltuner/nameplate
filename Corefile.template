@@ -1,3 +1,6 @@
+# ABOUTME: CoreDNS configuration template for serving Tailscale machine DNS records.
+# ABOUTME: Environment variables are substituted by entrypoint.sh at container startup.
+
 ${DOMAIN}:${DNS_PORT} {
     tailscale ${DOMAIN}
     cache ${CACHE_TTL}

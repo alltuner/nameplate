@@ -64,6 +64,7 @@ All settings are controlled via environment variables. Copy `.env.example` to `.
 | `CACHE_TTL` | `30` | DNS cache duration in seconds |
 | `HEALTH_PORT` | `8080` | Port for the health check HTTP endpoint |
 | `READY_PORT` | `8181` | Port for the readiness check HTTP endpoint |
+| `UPSTREAM_DNS` | *(empty)* | Upstream DNS server for forwarding unmatched queries (e.g., `1.1.1.1` or `100.100.100.100` for Tailscale MagicDNS). Leave empty to disable forwarding. |
 
 ## Configuring Tailscale split DNS
 
