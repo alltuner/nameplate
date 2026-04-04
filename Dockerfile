@@ -14,12 +14,16 @@ WORKDIR /build
 
 RUN git clone --depth 1 --branch ${COREDNS_VERSION} https://github.com/coredns/coredns.git .
 
-RUN sed -i '/^log:log/a tailscale:github.com/damomurf/coredns-tailscale' plugin.cfg
+# Add the tailscale plugin to the plugin list and regenerate imports.
+RUN sed -i '/^log:log/a tailscale:github.com/damomurf/coredns-tailscale' plugin.cfg && \
+    go get github.com/damomurf/coredns-tailscale@${COREDNS_TAILSCALE_VERSION} && \
+    go generate
 
-RUN go get github.com/damomurf/coredns-tailscale@${COREDNS_TAILSCALE_VERSION} && \
-    go generate && \
-    go mod tidy && \
-    CGO_ENABLED=0 go build -o coredns
+# Download dependencies in a separate layer so they are cached
+# independently of code changes.
+RUN go mod tidy && go mod download
+
+RUN CGO_ENABLED=0 go build -o coredns
 
 FROM alpine:3.20
 
