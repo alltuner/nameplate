@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/alltuner/nameplate/compare/v0.1.4...v0.1.5) (2026-04-04)
+
+
+### Build System
+
+* simplify Dockerfile with checked-in plugin.cfg and source tarball ([#18](https://github.com/alltuner/nameplate/issues/18)) ([bc972a4](https://github.com/alltuner/nameplate/commit/bc972a4c6e69c58876293d7c3628434560601a9d))
+
 ## [0.1.4](https://github.com/alltuner/nameplate/compare/v0.1.3...v0.1.4) (2026-04-04)
 
 
