@@ -119,7 +119,7 @@ You should see an A record pointing to the machine's Tailscale IP.
 - **Queries not reaching CoreDNS:** Ensure the CoreDNS host's Tailscale IP is correct and the container is running. Check `docker compose logs`.
 - **SERVFAIL responses:** The Tailscale socket might not be accessible. Verify the socket path in `.env` matches the actual location on your host. On Linux it's typically `/var/run/tailscale/tailscaled.sock`, on macOS it's `/Library/Tailscale/tailscaled.sock`.
 - **Stale results:** Increase `CACHE_TTL` if you want longer caching, or decrease it if machines are being added/removed frequently.
-- **Port conflicts:** If port 53 is already in use (common on Linux with systemd-resolved), change `DNS_PORT` to another port and update the split DNS nameserver entry to include the port (e.g., `100.64.x.x:5353`).
+- **Port conflicts:** Tailscale split DNS only routes queries to port 53, so the server must listen on port 53. If port 53 is already in use (common on Linux where systemd-resolved binds a stub listener to `127.0.0.53:53`), disable the stub listener by setting `DNSStubListener=no` in `/etc/systemd/resolved.conf` and restarting the service with `sudo systemctl restart systemd-resolved`.
 
 ## CNAME aliases
 
