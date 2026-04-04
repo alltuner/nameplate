@@ -43,6 +43,8 @@ jobs:
         env:
           TAG: ${{ needs.release-please.outputs.tag_name }}
 
+      # QEMU is only needed for the final alpine stage (apk add),
+      # not for Go compilation which cross-compiles natively.
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
 
