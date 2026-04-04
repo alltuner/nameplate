@@ -122,6 +122,13 @@ git.internal.example.com -> my-server.internal.example.com
 
 This is useful for giving friendly names to services running on specific machines.
 
+## Credits
+
+Nameplate is a thin packaging layer around two excellent projects:
+
+- **[CoreDNS](https://coredns.io/)** ([GitHub](https://github.com/coredns/coredns)) - A flexible, plugin-based DNS server written in Go, graduated from the CNCF.
+- **[coredns-tailscale](https://github.com/damomurf/coredns-tailscale)** by [@damomurf](https://github.com/damomurf) - The CoreDNS plugin that makes Tailnet machine discovery and CNAME aliasing possible.
+
 ## Build arguments
 
 The Dockerfile accepts build arguments for pinning versions:
