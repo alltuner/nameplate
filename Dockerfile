@@ -1,7 +1,7 @@
 # ABOUTME: Multi-stage build that compiles CoreDNS with the coredns-tailscale plugin.
 # ABOUTME: Produces a minimal image with sed-based runtime Corefile templating.
 
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:1.26-alpine@sha256:2389ebfa5b7f43eeafbd6be0c3700cc46690ef842ad962f6c5bd6be49ed82039 AS builder
 
 ARG COREDNS_VERSION=v1.14.2
 ARG COREDNS_TAILSCALE_VERSION=v0.3.22
@@ -23,7 +23,7 @@ RUN go mod edit -require github.com/damomurf/coredns-tailscale@${COREDNS_TAILSCA
 
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o coredns
 
-FROM alpine:3.23
+FROM alpine:3.23@sha256:25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
 
 COPY --chmod=755 --from=builder /build/coredns /usr/local/bin/coredns
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
