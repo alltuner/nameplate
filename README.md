@@ -25,18 +25,29 @@ The Corefile includes the following plugins:
 
 ## Quick start
 
-A pre-built multi-arch image (amd64/arm64) is available at `ghcr.io/alltuner/nameplate`.
+A pre-built multi-arch image (amd64/arm64) is published at `ghcr.io/alltuner/nameplate`.
 
-1. **Clone and configure:**
+1. **Create a `docker-compose.yml`** with your domain:
 
-   ```bash
-   git clone <repo-url> && cd nameplate
-   cp docker-compose.example.yml docker-compose.yml
-   cp .env.example .env
-   # Edit .env to match your setup
+   ```yaml
+   services:
+     coredns:
+       image: ghcr.io/alltuner/nameplate:latest
+       container_name: nameplate
+       ports:
+         - "53:53/tcp"
+         - "53:53/udp"
+       volumes:
+         - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock:ro
+       environment:
+         DOMAIN: internal.example.com  # <-- replace with your domain
+       restart: unless-stopped
+       healthcheck:
+         test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]
+         interval: 30s
+         timeout: 5s
+         retries: 3
    ```
-
-   To build locally instead, edit `docker-compose.yml`: uncomment `build: .` and comment out the `image` line.
 
 2. **Start the server:**
 
@@ -51,6 +62,8 @@ A pre-built multi-arch image (amd64/arm64) is available at `ghcr.io/alltuner/nam
    ```
 
 4. **Configure Tailscale split DNS** (see below).
+
+> **Building locally:** Clone the repo and use `build: .` instead of the `image` line in your compose file. See [Build arguments](#build-arguments) for version pinning options.
 
 ## Configuration
 
