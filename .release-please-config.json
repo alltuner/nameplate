@@ -4,6 +4,7 @@
       "changelog-path": "CHANGELOG.md",
       "release-type": "simple",
       "include-component-in-tag": false,
+      "exclude-paths": ["docs/", "README.md", "CHANGELOG.md", "*.md"],
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "changelog-sections": [
