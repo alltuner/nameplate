@@ -3,6 +3,8 @@
 
 FROM --platform=$BUILDPLATFORM golang:1.26-alpine@sha256:2389ebfa5b7f43eeafbd6be0c3700cc46690ef842ad962f6c5bd6be49ed82039 AS builder
 
+# COREDNS_VERSION must match the upstream version that plugin.cfg is based on.
+# To upgrade, update both plugin.cfg and this value together.
 ARG COREDNS_VERSION=v1.14.2
 ARG COREDNS_TAILSCALE_VERSION=v0.3.22
 ARG TARGETOS=linux
