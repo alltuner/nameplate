@@ -25,6 +25,8 @@ The Corefile includes the following plugins:
 
 ## Quick start
 
+A pre-built multi-arch image (amd64/arm64) is available at `ghcr.io/alltuner/nameplate`.
+
 1. **Clone and configure:**
 
    ```bash
@@ -33,6 +35,8 @@ The Corefile includes the following plugins:
    cp .env.example .env
    # Edit .env to match your setup
    ```
+
+   To build locally instead, edit `docker-compose.yml`: uncomment `build: .` and comment out the `image` line.
 
 2. **Start the server:**
 
