@@ -5,33 +5,27 @@ FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS builder
 
 ARG COREDNS_VERSION=v1.14.2
 ARG COREDNS_TAILSCALE_VERSION=v0.3.22
+ARG TARGETOS=linux
+ARG TARGETARCH
 
 ENV GOTOOLCHAIN=auto
 
-RUN apk add --no-cache git
-
 WORKDIR /build
 
-RUN git clone --depth 1 --branch ${COREDNS_VERSION} https://github.com/coredns/coredns.git .
+RUN wget -qO- https://github.com/coredns/coredns/archive/refs/tags/${COREDNS_VERSION}.tar.gz | \
+    tar xz --strip-components=1
 
-# Add the tailscale plugin to the plugin list and regenerate imports.
-RUN sed -i '/^log:log/a tailscale:github.com/damomurf/coredns-tailscale' plugin.cfg && \
-    go get github.com/damomurf/coredns-tailscale@${COREDNS_TAILSCALE_VERSION} && \
-    go generate
+COPY plugin.cfg .
 
-# Download dependencies in a separate layer so they are cached
-# independently of code changes.
-RUN go mod tidy && go mod download
+RUN go mod edit -require github.com/damomurf/coredns-tailscale@${COREDNS_TAILSCALE_VERSION} && \
+    go generate && \
+    go mod tidy
 
-# Cross-compile a binary for each target platform so the Go compiler
-# runs natively on the build host instead of under QEMU.
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o coredns-amd64
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o coredns-arm64
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o coredns
 
 FROM alpine:3.23
 
-ARG TARGETARCH
-COPY --chmod=755 --from=builder /build/coredns-${TARGETARCH} /usr/local/bin/coredns
+COPY --chmod=755 --from=builder /build/coredns /usr/local/bin/coredns
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 COPY Corefile.template /etc/coredns/Corefile.template
 
