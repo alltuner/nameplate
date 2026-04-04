@@ -1,5 +1,5 @@
 # ABOUTME: Multi-stage build that compiles CoreDNS with the coredns-tailscale plugin.
-# ABOUTME: Produces a minimal image with envsubst for runtime Corefile templating.
+# ABOUTME: Produces a minimal image with sed-based runtime Corefile templating.
 
 FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS builder
 
@@ -30,14 +30,10 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o coredns-arm64
 
 FROM alpine:3.23
 
-RUN apk add --no-cache gettext
-
 ARG TARGETARCH
-COPY --from=builder /build/coredns-${TARGETARCH} /usr/local/bin/coredns
-COPY entrypoint.sh /entrypoint.sh
+COPY --chmod=755 --from=builder /build/coredns-${TARGETARCH} /usr/local/bin/coredns
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
 COPY Corefile.template /etc/coredns/Corefile.template
-
-RUN chmod +x /entrypoint.sh
 
 EXPOSE 53/tcp 53/udp
 
