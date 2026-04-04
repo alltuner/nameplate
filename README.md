@@ -142,7 +142,7 @@ The Dockerfile accepts build arguments for pinning versions:
 | Argument | Default | Description |
 |---|---|---|
 | `COREDNS_VERSION` | `v1.14.2` | CoreDNS release tag |
-| `COREDNS_TAILSCALE_VERSION` | `v0.3.21` | coredns-tailscale plugin version |
+| `COREDNS_TAILSCALE_VERSION` | `v0.3.22` | coredns-tailscale plugin version |
 
 ```bash
 docker compose build --build-arg COREDNS_VERSION=v1.14.2
