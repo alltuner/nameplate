@@ -1,0 +1,8 @@
+${DOMAIN}:${DNS_PORT} {
+    tailscale ${DOMAIN}
+    cache ${CACHE_TTL}
+    log
+    errors
+    health :${HEALTH_PORT}
+    ready :${READY_PORT}
+}

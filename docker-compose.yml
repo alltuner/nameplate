@@ -1,0 +1,21 @@
+services:
+  coredns:
+    build: .
+    container_name: nameplate
+    ports:
+      - "${DNS_PORT:-53}:${DNS_PORT:-53}/tcp"
+      - "${DNS_PORT:-53}:${DNS_PORT:-53}/udp"
+    volumes:
+      - ${TAILSCALE_SOCKET_PATH:-/var/run/tailscale/tailscaled.sock}:/var/run/tailscale/tailscaled.sock:ro
+    environment:
+      DOMAIN: ${DOMAIN:-internal.example.com}
+      DNS_PORT: ${DNS_PORT:-53}
+      CACHE_TTL: ${CACHE_TTL:-30}
+      HEALTH_PORT: ${HEALTH_PORT:-8080}
+      READY_PORT: ${READY_PORT:-8181}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:${HEALTH_PORT:-8080}/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
