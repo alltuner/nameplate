@@ -63,7 +63,7 @@ A pre-built multi-arch image (amd64/arm64) is published at `ghcr.io/alltuner/nam
 
 4. **Configure Tailscale split DNS** (see below).
 
-> **Building locally:** Clone the repo and use `build: .` instead of the `image` line in your compose file. See [Build arguments](#build-arguments) for version pinning options.
+> **Building locally:** Clone the repo and use `build: .` instead of the `image` line in your compose file. See [Upgrading versions](#upgrading-versions) for version details.
 
 ## Configuration
 
@@ -148,17 +148,17 @@ Nameplate is a thin packaging layer around two excellent projects:
 - **[CoreDNS](https://coredns.io/)** ([GitHub](https://github.com/coredns/coredns)) - A flexible, plugin-based DNS server written in Go, graduated from the CNCF.
 - **[coredns-tailscale](https://github.com/damomurf/coredns-tailscale)** by [@damomurf](https://github.com/damomurf) - The CoreDNS plugin that makes Tailnet machine discovery and CNAME aliasing possible.
 
-## Build arguments
+## Upgrading versions
 
-The Dockerfile accepts build arguments for pinning versions:
+The CoreDNS version is pinned in the Dockerfile and must match the upstream version that `plugin.cfg` is based on. To upgrade CoreDNS, update both files together:
 
-| Argument | Default | Description |
-|---|---|---|
-| `COREDNS_VERSION` | `v1.14.2` | CoreDNS release tag |
-| `COREDNS_TAILSCALE_VERSION` | `v0.3.22` | coredns-tailscale plugin version |
+1. Generate a new `plugin.cfg` from the target CoreDNS release (adding the `tailscale` line).
+2. Update `COREDNS_VERSION` in the Dockerfile to match.
+
+The `COREDNS_TAILSCALE_VERSION` build argument in the Dockerfile can be overridden independently:
 
 ```bash
-docker compose build --build-arg COREDNS_VERSION=v1.14.2
+docker compose build --build-arg COREDNS_TAILSCALE_VERSION=v0.3.22
 ```
 
 ## Further reading
