@@ -29,6 +29,7 @@ The Corefile includes the following plugins:
 
    ```bash
    git clone <repo-url> && cd nameplate
+   cp docker-compose.example.yml docker-compose.yml
    cp .env.example .env
    # Edit .env to match your setup
    ```
@@ -145,3 +146,4 @@ docker compose build --build-arg COREDNS_VERSION=v1.14.2
 ## Further reading
 
 - [HTTPS with Let's Encrypt](docs/https-letsencrypt.md) - How to add TLS certificates to services on your custom internal domain.
+- [Alternative approaches](docs/alternatives.md) - Lighter DNS servers, the Tailscale local API, and the ecosystem landscape.

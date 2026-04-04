@@ -2,18 +2,37 @@ services:
   coredns:
     build: .
     container_name: nameplate
+
+    # Expose DNS on both TCP and UDP.
+    # Tailscale split DNS only routes to port 53, so changing this
+    # only makes sense for local testing.
     ports:
       - "${DNS_PORT:-53}:${DNS_PORT:-53}/tcp"
       - "${DNS_PORT:-53}:${DNS_PORT:-53}/udp"
+
     volumes:
+      # Mount the Tailscale daemon socket (read-only).
+      # On Linux: /var/run/tailscale/tailscaled.sock
+      # On macOS: not available (macOS uses a TCP port instead).
       - ${TAILSCALE_SOCKET_PATH:-/var/run/tailscale/tailscaled.sock}:/var/run/tailscale/tailscaled.sock:ro
+
     environment:
+      # Domain under which tailnet machines are served.
+      # A machine named "webserver" becomes webserver.internal.example.com
       DOMAIN: ${DOMAIN:-internal.example.com}
+
+      # Port CoreDNS listens on inside the container.
       DNS_PORT: ${DNS_PORT:-53}
+
+      # How long DNS responses are cached (seconds).
       CACHE_TTL: ${CACHE_TTL:-30}
+
+      # Ports for health and readiness HTTP endpoints.
       HEALTH_PORT: ${HEALTH_PORT:-8080}
       READY_PORT: ${READY_PORT:-8181}
+
     restart: unless-stopped
+
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:${HEALTH_PORT:-8080}/health"]
       interval: 30s
