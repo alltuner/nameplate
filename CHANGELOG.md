@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.3](https://github.com/alltuner/nameplate/compare/v0.1.2...v0.1.3) (2026-04-04)
+
+
+### Documentation Updates
+
+* fix incorrect port conflict troubleshooting advice ([#12](https://github.com/alltuner/nameplate/issues/12)) ([cccbdf7](https://github.com/alltuner/nameplate/commit/cccbdf79b8068aeb79aa051a9d57f05919d849c1))
+* simplify quick start with inline docker-compose example ([#10](https://github.com/alltuner/nameplate/issues/10)) ([98cffd0](https://github.com/alltuner/nameplate/commit/98cffd0c6f0ee78f1aaf2b709d6031e6d70d3904))
+
+
+### CI/CD Changes
+
+* exclude documentation paths from release-please ([#9](https://github.com/alltuner/nameplate/issues/9)) ([7a66b28](https://github.com/alltuner/nameplate/commit/7a66b281dcf434204b06806debd2a4cda868e1d4))
+
+
+### Build System
+
+* use Go cross-compilation instead of QEMU for CoreDNS builds ([#13](https://github.com/alltuner/nameplate/issues/13)) ([d9054b8](https://github.com/alltuner/nameplate/commit/d9054b89941f77e6e3ba4f35bb78b23d0dc97437))
+
 ## [0.1.2](https://github.com/alltuner/nameplate/compare/v0.1.1...v0.1.2) (2026-04-04)
 
 
