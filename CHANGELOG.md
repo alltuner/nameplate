@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.6](https://github.com/alltuner/nameplate/compare/v0.1.5...v0.1.6) (2026-04-05)
+
+
+### Documentation Updates
+
+* clarify CoreDNS version is tied to plugin.cfg ([#30](https://github.com/alltuner/nameplate/issues/30)) ([dfd5a18](https://github.com/alltuner/nameplate/commit/dfd5a18c1ce4bd1bedef824738eac7babdaa6f2b)), closes [#22](https://github.com/alltuner/nameplate/issues/22)
+
+
+### CI/CD Changes
+
+* add Docker build validation on PRs and main pushes ([#26](https://github.com/alltuner/nameplate/issues/26)) ([7c0e2be](https://github.com/alltuner/nameplate/commit/7c0e2bed7d1c4ddba1a3e90e73c427ad46516a5c)), closes [#21](https://github.com/alltuner/nameplate/issues/21)
+* pin third-party GitHub Actions by commit SHA ([#29](https://github.com/alltuner/nameplate/issues/29)) ([33c9f39](https://github.com/alltuner/nameplate/commit/33c9f394c2a5bc615d0b79d188cccefdb0a3e1b9)), closes [#25](https://github.com/alltuner/nameplate/issues/25)
+
+
+### Build System
+
+* pin Docker base images by digest for reproducible builds ([#27](https://github.com/alltuner/nameplate/issues/27)) ([ac4e17e](https://github.com/alltuner/nameplate/commit/ac4e17ea4571507a19f6eb58d838216dd0ad3112)), closes [#24](https://github.com/alltuner/nameplate/issues/24)
+* trim plugin.cfg to only plugins used in Corefile ([#28](https://github.com/alltuner/nameplate/issues/28)) ([290a5e6](https://github.com/alltuner/nameplate/commit/290a5e619420d68592e32bdc6a4d38dd81d7f6ec)), closes [#23](https://github.com/alltuner/nameplate/issues/23)
+
 ## [0.1.5](https://github.com/alltuner/nameplate/compare/v0.1.4...v0.1.5) (2026-04-04)
 
 
