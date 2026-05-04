@@ -1,33 +1,28 @@
-# Nameplate
+<p align="center">
+  <img src="https://brand.alltuner.com/logos/nameplate/horizontal.png" alt="Nameplate" width="500">
+</p>
 
-A Docker-based CoreDNS server that automatically creates DNS records for all machines in your Tailscale network (tailnet) under a custom domain. Uses the [coredns-tailscale](https://github.com/damomurf/coredns-tailscale) plugin to read machine information directly from the Tailscale daemon socket, with no API tokens required.
+<p align="center">
+  <strong>DNS for your tailnet.</strong><br>
+  A Docker-based CoreDNS server that turns every machine in your Tailscale network into a name under a custom domain.
+</p>
 
-For example, a machine named `media-server` in your tailnet becomes resolvable as `media-server.internal.example.com` from any device on the tailnet.
+<p align="center">
+  <a href="https://alltuner.com/sponsor">Sponsor</a>
+</p>
 
-## How it works
+<p align="center">
+  <img src="https://img.shields.io/github/license/alltuner/nameplate?color=5B2333" alt="License">
+  <img src="https://img.shields.io/github/stars/alltuner/nameplate?color=5B2333" alt="Stars">
+</p>
 
-CoreDNS runs with the `coredns-tailscale` plugin compiled in. The plugin connects to the Tailscale daemon socket (mounted into the container) and queries the local API to discover all machines visible to the host. It then serves A and AAAA records for each machine under your configured domain.
+---
 
-This is designed as a **split DNS** setup: Tailscale routes only your custom domain's queries to this server, while all other DNS queries continue to use your normal DNS resolver.
-
-### CoreDNS plugins
-
-The Corefile includes the following plugins:
-
-| Plugin | Purpose |
-|---|---|
-| **tailscale** | Queries the Tailscale local API via the daemon socket and serves A/AAAA records for each machine in the tailnet. Supports CNAME aliases via Tailscale ACL tags (see [CNAME aliases](#cname-aliases)). |
-| **cache** | Caches DNS responses for `CACHE_TTL` seconds (default 30). Reduces load on the Tailscale socket and speeds up repeated lookups. |
-| **log** | Logs all queries to stdout. Useful for debugging. Can be removed in production if you find it too noisy. |
-| **errors** | Logs errors to stdout. |
-| **health** | Exposes an HTTP health check at `/health` on `HEALTH_PORT` (default 8080). Used by the Docker healthcheck. |
-| **ready** | Exposes an HTTP readiness check at `/ready` on `READY_PORT` (default 8181). Reports 200 once all plugins are loaded. |
-
-## Quick start
+## Get Started
 
 A pre-built multi-arch image (amd64/arm64) is published at `ghcr.io/alltuner/nameplate`.
 
-1. **Create a `docker-compose.yml`** with your domain:
+1. Create a `docker-compose.yml`:
 
    ```yaml
    services:
@@ -49,25 +44,46 @@ A pre-built multi-arch image (amd64/arm64) is published at `ghcr.io/alltuner/nam
          retries: 3
    ```
 
-2. **Start the server:**
+2. Start the server:
 
    ```bash
    docker compose up -d
    ```
 
-3. **Verify it works:**
+3. Verify:
 
    ```bash
    dig @localhost my-machine.internal.example.com
    ```
 
-4. **Configure Tailscale split DNS** (see below).
+4. Configure Tailscale split DNS (see [below](#configuring-tailscale-split-dns)).
 
-> **Building locally:** Clone the repo and use `build: .` instead of the `image` line in your compose file. See [Upgrading versions](#upgrading-versions) for version details.
+> **Building locally:** clone the repo and use `build: .` instead of `image:` in your compose file. See [Upgrading versions](#upgrading-versions) for details.
+
+---
+
+## What is Nameplate?
+
+Nameplate runs CoreDNS with the [`coredns-tailscale`](https://github.com/damomurf/coredns-tailscale) plugin compiled in. The plugin reads your tailnet's machine list directly from the Tailscale daemon socket (no API tokens required) and serves A and AAAA records for each machine under a domain you configure.
+
+A machine named `media-server` becomes `media-server.internal.example.com`, resolvable from any device on the tailnet.
+
+This is designed as a **split DNS** setup: Tailscale routes only your custom domain's queries to Nameplate, while every other DNS query continues to use your normal resolver.
+
+### CoreDNS plugins
+
+| Plugin | Purpose |
+|---|---|
+| **tailscale** | Queries the Tailscale local API via the daemon socket and serves A/AAAA records for each machine in the tailnet. Supports CNAME aliases via Tailscale ACL tags (see [CNAME aliases](#cname-aliases)). |
+| **cache** | Caches DNS responses for `CACHE_TTL` seconds (default 30). Reduces load on the Tailscale socket and speeds up repeated lookups. |
+| **log** | Logs all queries to stdout. Useful for debugging. Can be removed in production if too noisy. |
+| **errors** | Logs errors to stdout. |
+| **health** | Exposes an HTTP health check at `/health` on `HEALTH_PORT` (default 8080). Used by the Docker healthcheck. |
+| **ready** | Exposes an HTTP readiness check at `/ready` on `READY_PORT` (default 8181). Reports 200 once all plugins are loaded. |
 
 ## Configuration
 
-All settings are controlled via environment variables. Copy `.env.example` to `.env` and adjust:
+All settings are environment variables. Copy `.env.example` to `.env` and adjust:
 
 | Variable | Default | Description |
 |---|---|---|
@@ -85,13 +101,11 @@ Split DNS tells Tailscale to route DNS queries for a specific domain to a namese
 
 ### Step 1: Note the Tailscale IP of your CoreDNS host
 
-On the machine running this container:
-
 ```bash
 tailscale ip -4
 ```
 
-Note this IP (e.g., `100.64.x.x`). This is the address Tailscale will send DNS queries to.
+Note this IP (e.g., `100.64.x.x`). This is where Tailscale will send DNS queries.
 
 ### Step 2: Configure split DNS in the Tailscale admin console
 
@@ -106,8 +120,6 @@ Note this IP (e.g., `100.64.x.x`). This is the address Tailscale will send DNS q
 
 ### Step 3: Verify from another device on the tailnet
 
-From any machine on your tailnet:
-
 ```bash
 dig my-machine.internal.example.com
 ```
@@ -116,10 +128,10 @@ You should see an A record pointing to the machine's Tailscale IP.
 
 ### Troubleshooting split DNS
 
-- **Queries not reaching CoreDNS:** Ensure the CoreDNS host's Tailscale IP is correct and the container is running. Check `docker compose logs`.
-- **SERVFAIL responses:** The Tailscale socket might not be accessible. Verify the socket path in `.env` matches the actual location on your host. On Linux it's typically `/var/run/tailscale/tailscaled.sock`, on macOS it's `/Library/Tailscale/tailscaled.sock`.
-- **Stale results:** Increase `CACHE_TTL` if you want longer caching, or decrease it if machines are being added/removed frequently.
-- **Port conflicts:** Tailscale split DNS only routes queries to port 53, so the server must listen on port 53. If port 53 is already in use (common on Linux where systemd-resolved binds a stub listener to `127.0.0.53:53`), disable the stub listener by setting `DNSStubListener=no` in `/etc/systemd/resolved.conf` and restarting the service with `sudo systemctl restart systemd-resolved`.
+- **Queries not reaching CoreDNS:** ensure the CoreDNS host's Tailscale IP is correct and the container is running. Check `docker compose logs`.
+- **SERVFAIL responses:** the Tailscale socket might not be accessible. Verify the socket path in `.env` matches the actual location on your host. On Linux it's typically `/var/run/tailscale/tailscaled.sock`, on macOS it's `/Library/Tailscale/tailscaled.sock`.
+- **Stale results:** increase `CACHE_TTL` if you want longer caching, decrease it if machines are being added/removed frequently.
+- **Port conflicts:** Tailscale split DNS only routes queries to port 53, so the server must listen on 53. If port 53 is already in use (common on Linux where systemd-resolved binds a stub listener to `127.0.0.53:53`), disable the stub listener by setting `DNSStubListener=no` in `/etc/systemd/resolved.conf` and restarting `systemd-resolved`.
 
 ## CNAME aliases
 
@@ -139,14 +151,7 @@ Then apply the tag to a machine. This creates a CNAME record:
 git.internal.example.com -> my-server.internal.example.com
 ```
 
-This is useful for giving friendly names to services running on specific machines.
-
-## Credits
-
-Nameplate is a thin packaging layer around two excellent projects:
-
-- **[CoreDNS](https://coredns.io/)** ([GitHub](https://github.com/coredns/coredns)) - A flexible, plugin-based DNS server written in Go, graduated from the CNCF.
-- **[coredns-tailscale](https://github.com/damomurf/coredns-tailscale)** by [@damomurf](https://github.com/damomurf) - The CoreDNS plugin that makes Tailnet machine discovery and CNAME aliasing possible.
+Useful for giving friendly names to services running on specific machines.
 
 ## Upgrading versions
 
@@ -155,7 +160,7 @@ The CoreDNS version is pinned in the Dockerfile and must match the upstream vers
 1. Generate a new `plugin.cfg` from the target CoreDNS release (adding the `tailscale` line).
 2. Update `COREDNS_VERSION` in the Dockerfile to match.
 
-The `COREDNS_TAILSCALE_VERSION` build argument in the Dockerfile can be overridden independently:
+The `COREDNS_TAILSCALE_VERSION` build argument can be overridden independently:
 
 ```bash
 docker compose build --build-arg COREDNS_TAILSCALE_VERSION=v0.3.22
@@ -163,5 +168,29 @@ docker compose build --build-arg COREDNS_TAILSCALE_VERSION=v0.3.22
 
 ## Further reading
 
-- [HTTPS with Let's Encrypt](docs/https-letsencrypt.md) - How to add TLS certificates to services on your custom internal domain.
-- [Alternative approaches](docs/alternatives.md) - Lighter DNS servers, the Tailscale local API, and the ecosystem landscape.
+- [HTTPS with Let's Encrypt](docs/https-letsencrypt.md) — how to add TLS certificates to services on your custom internal domain.
+- [Alternative approaches](docs/alternatives.md) — lighter DNS servers, the Tailscale local API, and the ecosystem landscape.
+
+## Credits
+
+Nameplate is a thin packaging layer around two excellent projects:
+
+- **[CoreDNS](https://coredns.io/)** ([GitHub](https://github.com/coredns/coredns)) — a flexible, plugin-based DNS server written in Go, graduated from the CNCF.
+- **[coredns-tailscale](https://github.com/damomurf/coredns-tailscale)** by [@damomurf](https://github.com/damomurf) — the CoreDNS plugin that makes tailnet machine discovery and CNAME aliasing possible.
+
+## License
+
+[MIT](LICENSE)
+
+## Support the project
+
+Nameplate is an open source project built by [David Poblador i Garcia](https://davidpoblador.com/) through [All Tuner Labs](https://www.alltuner.com/).
+
+If this project was useful to you, [consider supporting its development](https://alltuner.com/sponsor).
+
+---
+
+<p align="center">
+  Built by <a href="https://davidpoblador.com">David Poblador i Garcia</a> with the support of <a href="https://alltuner.com">All Tuner Labs</a>.<br>
+  Made with ❤️ in Poblenou, Barcelona.
+</p>
