@@ -6,33 +6,15 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/sponsors/alltuner">Sponsor</a>
+  <a href="https://alltuner.com/sponsor">Sponsor</a>
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/github/license/alltuner/nameplate?color=5B2333" alt="License">
   <img src="https://img.shields.io/github/stars/alltuner/nameplate?color=5B2333" alt="Stars">
 </p>
 
 ---
-
-## What is Nameplate?
-
-Nameplate runs CoreDNS with the [`coredns-tailscale`](https://github.com/damomurf/coredns-tailscale) plugin compiled in. The plugin reads your tailnet's machine list directly from the Tailscale daemon socket (no API tokens required) and serves A and AAAA records for each machine under a domain you configure.
-
-A machine named `media-server` becomes `media-server.internal.example.com`, resolvable from any device on the tailnet.
-
-This is designed as a **split DNS** setup: Tailscale routes only your custom domain's queries to Nameplate, while every other DNS query continues to use your normal resolver.
-
-### CoreDNS plugins
-
-| Plugin | Purpose |
-|---|---|
-| **tailscale** | Queries the Tailscale local API via the daemon socket and serves A/AAAA records for each machine in the tailnet. Supports CNAME aliases via Tailscale ACL tags (see [CNAME aliases](#cname-aliases)). |
-| **cache** | Caches DNS responses for `CACHE_TTL` seconds (default 30). Reduces load on the Tailscale socket and speeds up repeated lookups. |
-| **log** | Logs all queries to stdout. Useful for debugging. Can be removed in production if too noisy. |
-| **errors** | Logs errors to stdout. |
-| **health** | Exposes an HTTP health check at `/health` on `HEALTH_PORT` (default 8080). Used by the Docker healthcheck. |
-| **ready** | Exposes an HTTP readiness check at `/ready` on `READY_PORT` (default 8181). Reports 200 once all plugins are loaded. |
 
 ## Get Started
 
@@ -72,9 +54,30 @@ A pre-built multi-arch image (amd64/arm64) is published at `ghcr.io/alltuner/nam
    dig @localhost my-machine.internal.example.com
    ```
 
-4. Configure Tailscale split DNS (see below).
+4. Configure Tailscale split DNS (see [below](#configuring-tailscale-split-dns)).
 
 > **Building locally:** clone the repo and use `build: .` instead of `image:` in your compose file. See [Upgrading versions](#upgrading-versions) for details.
+
+---
+
+## What is Nameplate?
+
+Nameplate runs CoreDNS with the [`coredns-tailscale`](https://github.com/damomurf/coredns-tailscale) plugin compiled in. The plugin reads your tailnet's machine list directly from the Tailscale daemon socket (no API tokens required) and serves A and AAAA records for each machine under a domain you configure.
+
+A machine named `media-server` becomes `media-server.internal.example.com`, resolvable from any device on the tailnet.
+
+This is designed as a **split DNS** setup: Tailscale routes only your custom domain's queries to Nameplate, while every other DNS query continues to use your normal resolver.
+
+### CoreDNS plugins
+
+| Plugin | Purpose |
+|---|---|
+| **tailscale** | Queries the Tailscale local API via the daemon socket and serves A/AAAA records for each machine in the tailnet. Supports CNAME aliases via Tailscale ACL tags (see [CNAME aliases](#cname-aliases)). |
+| **cache** | Caches DNS responses for `CACHE_TTL` seconds (default 30). Reduces load on the Tailscale socket and speeds up repeated lookups. |
+| **log** | Logs all queries to stdout. Useful for debugging. Can be removed in production if too noisy. |
+| **errors** | Logs errors to stdout. |
+| **health** | Exposes an HTTP health check at `/health` on `HEALTH_PORT` (default 8080). Used by the Docker healthcheck. |
+| **ready** | Exposes an HTTP readiness check at `/ready` on `READY_PORT` (default 8181). Reports 200 once all plugins are loaded. |
 
 ## Configuration
 
@@ -177,15 +180,11 @@ Nameplate is a thin packaging layer around two excellent projects:
 
 Nameplate is an open source project built by [David Poblador i Garcia](https://davidpoblador.com/) through [All Tuner Labs](https://www.alltuner.com/).
 
-If this project saved you a Bind config, consider supporting its development.
+If this project was useful to you, [consider supporting its development](https://alltuner.com/sponsor).
 
-❤️ **Sponsor development**
-https://github.com/sponsors/alltuner
+## License
 
-☕ **One-time support**
-https://buymeacoffee.com/alltuner
-
-Your support helps fund the continued development of Nameplate and other open source developer tools such as [Factory Floor](https://github.com/alltuner/factoryfloor).
+[MIT](LICENSE)
 
 ---
 
