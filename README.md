@@ -176,15 +176,15 @@ Nameplate is a thin packaging layer around two excellent projects:
 - **[CoreDNS](https://coredns.io/)** ([GitHub](https://github.com/coredns/coredns)) — a flexible, plugin-based DNS server written in Go, graduated from the CNCF.
 - **[coredns-tailscale](https://github.com/damomurf/coredns-tailscale)** by [@damomurf](https://github.com/damomurf) — the CoreDNS plugin that makes tailnet machine discovery and CNAME aliasing possible.
 
+## License
+
+[MIT](LICENSE)
+
 ## Support the project
 
 Nameplate is an open source project built by [David Poblador i Garcia](https://davidpoblador.com/) through [All Tuner Labs](https://www.alltuner.com/).
 
 If this project was useful to you, [consider supporting its development](https://alltuner.com/sponsor).
-
-## License
-
-[MIT](LICENSE)
 
 ---
 
