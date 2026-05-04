@@ -1,4 +1,6 @@
-<h1 align="center">Nameplate</h1>
+<p align="center">
+  <img src="https://brand.alltuner.com/logos/nameplate/horizontal.png" alt="Nameplate" width="500">
+</p>
 
 <p align="center">
   <strong>DNS for your tailnet.</strong><br>
