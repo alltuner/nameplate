@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.7](https://github.com/alltuner/nameplate/compare/v0.1.6...v0.1.7) (2026-05-04)
+
+
+### Miscellaneous Chores
+
+* **deps:** update googleapis/release-please-action action to v5 ([#35](https://github.com/alltuner/nameplate/issues/35)) ([0bea0cb](https://github.com/alltuner/nameplate/commit/0bea0cbc3f875dbfade2081e2d5e3a85a189cee5))
+
+
+### Documentation Updates
+
+* standardize README to alltuner brand structure ([#40](https://github.com/alltuner/nameplate/issues/40)) ([16816be](https://github.com/alltuner/nameplate/commit/16816be074460177bb0d4a06c02ae772db39e61d))
+
+
+### CI/CD Changes
+
+* allow revert as a conventional PR title type ([#39](https://github.com/alltuner/nameplate/issues/39)) ([bab5ff5](https://github.com/alltuner/nameplate/commit/bab5ff53e7f6ea607f1be00eb5a5e1d31354dfe8))
+* validate PR titles as conventional commits ([#37](https://github.com/alltuner/nameplate/issues/37)) ([ec1404d](https://github.com/alltuner/nameplate/commit/ec1404d0819b77c3f7c1ba24f2c403bfeb27140a))
+
 ## [0.1.6](https://github.com/alltuner/nameplate/compare/v0.1.5...v0.1.6) (2026-04-05)
 
 
