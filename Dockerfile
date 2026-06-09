@@ -25,7 +25,7 @@ RUN go mod edit -require github.com/damomurf/coredns-tailscale@${COREDNS_TAILSCA
 
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o coredns
 
-FROM alpine:3.23
+FROM alpine:3.24
 
 COPY --chmod=755 --from=builder /build/coredns /usr/local/bin/coredns
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
