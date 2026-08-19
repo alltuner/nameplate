@@ -1,7 +1,7 @@
 # ABOUTME: Multi-stage build that compiles CoreDNS with the coredns-tailscale plugin.
 # ABOUTME: Produces a minimal image with sed-based runtime Corefile templating.
 
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS builder
 
 # COREDNS_VERSION must match the upstream version that plugin.cfg is based on.
 # To upgrade, update both plugin.cfg and this value together.
