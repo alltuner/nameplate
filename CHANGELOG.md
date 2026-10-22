@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/alltuner/nameplate/compare/v0.1.7...v0.1.8) (2026-10-22)
+
+
+### Documentation Updates
+
+* link the sponsor page by its trailing-slash URL ([#44](https://github.com/alltuner/nameplate/issues/44)) ([ae26273](https://github.com/alltuner/nameplate/commit/ae26273270f6aeea4a56bb3e546368ede90df57e))
+
 ## [0.1.7](https://github.com/alltuner/nameplate/compare/v0.1.6...v0.1.7) (2026-05-04)
 
 
